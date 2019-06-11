@@ -598,7 +598,7 @@ var _Vector = _interopRequireDefault(require("./Vector"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 },{"./Calc":"../src/Calc.js","./Canvas":"../src/Canvas.js","./Vector":"../src/Vector.js"}],"img/logo.png":[function(require,module,exports) {
-module.exports = "/logo.cecc779a.png";
+module.exports = "logo.cecc779a.png";
 },{}],"src/3.js":[function(require,module,exports) {
 "use strict";
 
@@ -924,7 +924,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64374" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54904" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -1100,4 +1100,4 @@ function hmrAcceptRun(bundle, id) {
   }
 }
 },{}]},{},["../node_modules/parcel/src/builtins/hmr-runtime.js","src/3.js"], null)
-//# sourceMappingURL=/3.3a0ae0df.js.map
+//# sourceMappingURL=3.3a0ae0df.js.map
