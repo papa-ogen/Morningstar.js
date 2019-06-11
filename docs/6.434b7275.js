@@ -597,12 +597,164 @@ var _Canvas = _interopRequireDefault(require("./Canvas"));
 var _Vector = _interopRequireDefault(require("./Vector"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./Calc":"../src/Calc.js","./Canvas":"../src/Canvas.js","./Vector":"../src/Vector.js"}],"1.js":[function(require,module,exports) {
+},{"./Calc":"../src/Calc.js","./Canvas":"../src/Canvas.js","./Vector":"../src/Vector.js"}],"classes/Bullet.js":[function(require,module,exports) {
 "use strict";
 
-var _src = require("../src");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Bullet = void 0;
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Bullet =
+/*#__PURE__*/
+function () {
+  function Bullet(ms, pos, r) {
+    _classCallCheck(this, Bullet);
+
+    this.ms = ms;
+    this.r = r;
+    this.x = pos.x;
+    this.y = pos.y;
+    this.velocity = 10;
+  }
+
+  _createClass(Bullet, [{
+    key: "destroy",
+    value: function destroy() {
+      this.ms.bullets.splice(this, 1);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var ms = this.ms,
+          x = this.x,
+          y = this.y,
+          r = this.r;
+      ms.arc({
+        x: x,
+        y: y,
+        r: r,
+        color: 'red'
+      });
+      this.x -= this.velocity;
+    }
+  }]);
+
+  return Bullet;
+}();
+
+exports.Bullet = Bullet;
+},{}],"classes/Tank.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Tank = void 0;
+
+var _Bullet = require("../classes/Bullet");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Tank =
+/*#__PURE__*/
+function () {
+  function Tank(ms, x, y, width, height) {
+    _classCallCheck(this, Tank);
+
+    this.ms = ms;
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.turret = {
+      x: this.x - 30,
+      y: this.y + this.height / 2 - 10,
+      width: 30,
+      height: 20
+    };
+    this.velocity = 10;
+    this.isMoving = false;
+    this.dir = 1;
+  }
+
+  _createClass(Tank, [{
+    key: "shoot",
+    value: function shoot() {
+      var _this$turret = this.turret,
+          ms = _this$turret.ms,
+          x = _this$turret.x,
+          y = _this$turret.y;
+      var r = 10;
+      var bullet = new _Bullet.Bullet(this.ms, {
+        x: x,
+        y: y + r
+      }, r);
+      this.ms.bullets.push(bullet);
+      this.ms.barrelDebree(x, y + r);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var ms = this.ms,
+          x = this.x,
+          y = this.y,
+          width = this.width,
+          height = this.height,
+          isMoving = this.isMoving,
+          dir = this.dir,
+          velocity = this.velocity;
+
+      if (isMoving) {
+        if (dir === 1 && y > 0) {
+          this.y -= velocity;
+          this.turret.y -= velocity;
+        } else if (dir === 0 && y + height < ms.canvas.height) {
+          this.y += velocity;
+          this.turret.y += velocity;
+        }
+      }
+
+      ms.rect({
+        x: x,
+        y: y,
+        width: width,
+        height: height,
+        color: '#fff'
+      });
+      ms.rect({
+        x: this.turret.x,
+        y: this.turret.y,
+        width: this.turret.width,
+        height: this.turret.height,
+        color: '#fff'
+      });
+    }
+  }]);
+
+  return Tank;
+}();
+
+exports.Tank = Tank;
+},{"../classes/Bullet":"classes/Bullet.js"}],"classes/Circle.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Circle = void 0;
+
+var _src = require("../../src");
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
@@ -612,13 +764,230 @@ function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = 
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+var Circle =
+/*#__PURE__*/
+function () {
+  function Circle(morningstar, pos, r, vel, acc, angle, color) {
+    _classCallCheck(this, Circle);
+
+    this.ctx = morningstar.ctx;
+    this.ms = morningstar;
+    this.x = pos.x;
+    this.y = pos.y;
+    this.velocity = vel;
+    this.acceleration = acc;
+    this.r = r;
+    this.angle = angle;
+    this.color = color;
+  }
+
+  _createClass(Circle, [{
+    key: "collision",
+    value: function collision(objects) {
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = objects[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var object = _step.value;
+          if (object === this) break;
+
+          if (this.movingCircleCollision(this, object)) {
+            return object;
+          }
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return != null) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      return false;
+    }
+  }, {
+    key: "circleCollisionPoint",
+    value: function circleCollisionPoint(x1, y1, r1, x2, y2, r2) {
+      var collisionPointX = (x1 * r2 + x2 * r1) / (r1 + r2);
+      var collisionPointY = (y1 * r2 + y2 * r1) / (r1 + r2);
+      return [collisionPointX, collisionPointY];
+    }
+  }, {
+    key: "movingCircleCollision",
+    value: function movingCircleCollision(c1, c2) {
+      var combinedRadii,
+          overlap,
+          xSide,
+          ySide,
+          s = {},
+          p1A = {},
+          p1B = {},
+          p2A = {},
+          p2B = {};
+      c1.mass = c1.mass || 1;
+      c2.mass = c2.mass || 1;
+      c1.vx = c1.x + Math.cos(c1.angle) * c1.velocity;
+      c1.vy = c1.y + Math.sin(c1.angle) * c1.velocity;
+      c2.vx = c2.x + Math.cos(c2.angle) * c2.velocity;
+      c2.vy = c2.y + Math.sin(c2.angle) * c2.velocity;
+      s.vx = c2.x - c1.x;
+      s.vy = c2.y - c1.y;
+      s.magnitude = Math.sqrt(s.vx * s.vx + s.vy * s.vy);
+      combinedRadii = c1.r + c2.r;
+
+      if (s.magnitude < combinedRadii) {
+        overlap = combinedRadii - s.magnitude;
+        overlap += 0.3; // Normalize vector
+
+        s.dx = s.vx / s.magnitude;
+        s.dy = s.vy / s.magnitude;
+        s.vxHalf = Math.abs(s.dx * overlap / 2);
+        s.vyHalf = Math.abs(s.dy * overlap / 2);
+        c1.x > c2.x ? xSide = 1 : xSide = -1;
+        c1.y > c2.y ? ySide = 1 : ySide = -1;
+        c1.x = c1.x + s.vxHalf * xSide;
+        c1.y = c1.y + s.vyHalf * ySide;
+        c2.x = c2.x + s.vxHalf * -xSide;
+        c2.y = c2.y + s.vyHalf * -ySide;
+        s.lx = s.vy;
+        s.ly = -s.vx;
+        var dp1 = c1.vx * s.dx + c1.vy * s.dy;
+        p1A.x = dp1 * s.dx;
+        p1A.y = dp1 * s.dy;
+        var dp2 = c1.vx * (s.lx / s.magnitude) + c1.vy * (s.ly / s.magnitude);
+        p1B.x = dp2 * (s.lx / s.magnitude);
+        p1B.y = dp2 * (s.ly / s.magnitude);
+        var dp3 = c2.vx * s.dx + c2.vy * s.dy;
+        p2A.x = dp3 * s.dx;
+        p2A.y = dp3 * s.dy;
+        var dp4 = c2.vx * (s.lx / s.magnitude) + c2.vy * (s.ly / s.magnitude);
+        p2B.x = dp4 * (s.lx / s.magnitude);
+        p2B.y = dp4 * (s.ly / s.magnitude);
+        c1.bounce = {};
+        c1.bounce.x = p1B.x + p2A.x;
+        c1.bounce.y = p1B.y + p2A.y;
+        c2.bounce = {};
+        c2.bounce.x = p1A.x + p2B.x;
+        c2.bounce.y = p1A.y + p2B.y;
+        var vx = c1.bounce.x / c1.mass;
+        var vy = c1.bounce.y / c1.mass;
+        var vx2 = c2.bounce.x / c2.mass;
+        var vy2 = c2.bounce.y / c2.mass;
+        var deltaX = vx - c1.x;
+        var deltaY = vy - c1.y;
+        var deltaX2 = vx2 - c2.x;
+        var deltaY2 = vy2 - c2.y;
+        c2.angle = Math.atan2(deltaY, deltaX);
+        c1.angle = Math.atan2(deltaY2, deltaX2);
+        return true;
+      }
+    }
+  }, {
+    key: "destroy",
+    value: function destroy() {
+      this.ms.circles.splice(this, 1);
+    }
+  }, {
+    key: "update",
+    value: function update(objects) {
+      var ms = this.ms,
+          x = this.x,
+          y = this.y,
+          r = this.r,
+          color = this.color;
+      var collidedCircle = this.collision(objects);
+
+      if (collidedCircle) {
+        var x2 = collidedCircle.x,
+            y2 = collidedCircle.y,
+            r2 = collidedCircle.r;
+
+        var contactPoint = _src.Calc.createVector((x + x2) * 0.5, (y + y2) * 0.5);
+
+        var contactAngle = Math.atan2(x2 - contactPoint.x, y2 - contactPoint.y);
+        this.angle = Math.sin(contactAngle);
+        collidedCircle.angle = Math.cos(contactAngle); // EXPLODE
+
+        var _this$circleCollision = this.circleCollisionPoint(x, y, r, x2, y2, r2),
+            _this$circleCollision2 = _slicedToArray(_this$circleCollision, 2),
+            collisionX = _this$circleCollision2[0],
+            collisionY = _this$circleCollision2[1];
+
+        ms.createParticles(collisionX, collisionY, color);
+        collidedCircle.destroy();
+        this.r = this.r / 2;
+
+        if (this.r < 1) {
+          this.destroy();
+        }
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var x = this.x,
+          y = this.y,
+          r = this.r,
+          velocity = this.velocity,
+          angle = this.angle;
+      this.x = x + Math.cos(angle) * velocity;
+      this.y = y + Math.sin(angle) * velocity;
+
+      if (this.x > this.ms.canvas.width - r) {
+        this.ms.health -= 1;
+        this.velocity = 0;
+        this.destroy();
+      }
+
+      if (this.y > this.ms.canvas.height - r) {
+        this.angle = Morningstar.reflectionAngleTopBottom(angle);
+      }
+
+      if (this.y < r) {
+        this.angle = Morningstar.reflectionAngleTopBottom(angle);
+      }
+
+      this.ms.arc({
+        x: x,
+        y: y,
+        r: r,
+        color: this.color
+      });
+    }
+  }]);
+
+  return Circle;
+}();
+
+exports.Circle = Circle;
+},{"../../src":"../src/index.js"}],"classes/Particle.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CircleParticle = exports.SquareParticle = exports.Particle = void 0;
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
@@ -636,229 +1005,288 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-// https://en.wikipedia.org/wiki/A*_search_algorithm
-var Cell =
+var Particle =
 /*#__PURE__*/
 function () {
-  function Cell(ctx, width, height, x, y) {
-    _classCallCheck(this, Cell);
+  function Particle(morningstar, position, velocity, acceleration, angle) {
+    _classCallCheck(this, Particle);
 
-    this.ctx = ctx;
-    this.width = width;
-    this.height = height;
-    this.x = x;
-    this.y = y;
-    this.cameFrom = null;
-    this.neighbors = [];
-    this.visited = false;
-    this.gScore = 0;
-    this.fScore = 0;
-    this.wall = false;
-
-    if (Math.random() < 0.3) {
-      this.wall = true;
-    }
+    this.ctx = morningstar.ctx;
+    this.ms = morningstar;
+    this._position = position;
+    this.velocity = velocity;
+    this.acc = acceleration;
+    this.alpha = 1;
+    this.angle = angle;
   }
 
-  _createClass(Cell, [{
-    key: "render",
-    value: function render(current) {
-      if (this.wall) {
-        this.ctx.fillStyle = '#000';
-        this.ctx.fillRect(this.x, this.y, this.width, this.height);
-      } else if (current) {
-        this.ctx.fillStyle = '#33ECFF';
-        this.ctx.fillRect(this.x, this.y, this.width, this.height);
-      } else if (this.visited) {
-        this.ctx.fillStyle = '#E7FCD8';
-        this.ctx.fillRect(this.x, this.y, this.width, this.height);
-      }
+  _createClass(Particle, [{
+    key: "setColor",
+    value: function setColor(color) {
+      return color;
     }
   }, {
-    key: "renderAsNeighbor",
-    value: function renderAsNeighbor() {
-      this.ctx.fillStyle = '#AECDFE';
-      this.ctx.fillRect(this.x, this.y, this.width, this.height);
+    key: "position",
+    set: function set(position) {
+      var z = position.z;
+
+      if (z > 5) {
+        position.z = 3;
+      }
+
+      this._position = position;
+    },
+    get: function get() {
+      return this._position;
     }
   }]);
 
-  return Cell;
+  return Particle;
 }();
 
-var AStar =
-/*#__PURE__*/
-function (_Canvas) {
-  _inherits(AStar, _Canvas);
+exports.Particle = Particle;
 
-  function AStar() {
+var SquareParticle =
+/*#__PURE__*/
+function (_Particle) {
+  _inherits(SquareParticle, _Particle);
+
+  function SquareParticle(morningstar, position, width, height, color, velocity, acceleration, angle) {
     var _this;
 
-    _classCallCheck(this, AStar);
+    _classCallCheck(this, SquareParticle);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(AStar).call(this, {
-      width: 600,
-      height: 600,
-      bgColor: '#BADA55',
-      fps: 16
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(SquareParticle).call(this, morningstar, position, velocity, acceleration, angle));
+    _this.width = width;
+    _this.height = height;
+    _this.color = color;
+    return _this;
+  }
+
+  _createClass(SquareParticle, [{
+    key: "render",
+    value: function render() {
+      var position = this.position,
+          width = this.width,
+          height = this.height,
+          color = this.color,
+          alpha = this.alpha,
+          angle = this.angle,
+          velocity = this.velocity;
+      this.ms.rect(_objectSpread({}, position, {
+        width: width,
+        height: height,
+        color: "rgba(100, 100, 0, ".concat(alpha, ")")
+      }));
+      this.alpha -= 0.01;
+      this.position.x = this.position.x + Math.cos(angle) * velocity;
+      this.position.y = this.position.y + Math.sin(angle) * velocity;
+      this.velocity += this.acc;
+    }
+  }]);
+
+  return SquareParticle;
+}(Particle);
+
+exports.SquareParticle = SquareParticle;
+
+var CircleParticle =
+/*#__PURE__*/
+function (_Particle2) {
+  _inherits(CircleParticle, _Particle2);
+
+  function CircleParticle(morningstar, position, r, velocity, acceleration, angle) {
+    var _this2;
+
+    _classCallCheck(this, CircleParticle);
+
+    _this2 = _possibleConstructorReturn(this, _getPrototypeOf(CircleParticle).call(this, morningstar, position, velocity, acceleration, angle));
+    _this2.r = r;
+    return _this2;
+  }
+
+  _createClass(CircleParticle, [{
+    key: "render",
+    value: function render(time) {
+      var position = this.position,
+          r = this.r,
+          alpha = this.alpha,
+          angle = this.angle,
+          velocity = this.velocity;
+      var radius = Math.sin(time / 200) + r;
+      this.ms.arc(_objectSpread({}, position, {
+        r: radius,
+        color: "rgba(255, 100, 0, ".concat(alpha, ")")
+      }));
+      this.alpha -= 0.01;
+      this.position.x = this.position.x + Math.cos(angle) * velocity;
+      this.position.y = this.position.y + Math.sin(angle) * velocity;
+      this.velocity += this.acc;
+    }
+  }]);
+
+  return CircleParticle;
+}(Particle);
+
+exports.CircleParticle = CircleParticle;
+},{}],"6.js":[function(require,module,exports) {
+"use strict";
+
+var _src = require("../src");
+
+var _Tank = require("./classes/Tank");
+
+var _Circle = require("./classes/Circle");
+
+var _Particle = require("./classes/Particle");
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var BallsAndTanks =
+/*#__PURE__*/
+function (_Canvas) {
+  _inherits(BallsAndTanks, _Canvas);
+
+  function BallsAndTanks() {
+    var _this;
+
+    _classCallCheck(this, BallsAndTanks);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(BallsAndTanks).call(this, {
+      fps: 60,
+      bgColor: 'rgb(50, 50, 50)',
+      width: window.innerWidth,
+      height: window.innerHeight
     }));
-    _this.cols = 50;
-    _this.rows = 50;
-    _this.cellWidth = _this.canvas.width / _this.cols;
-    _this.cellHeight = _this.canvas.height / _this.rows;
-    _this.cells = [];
-    _this.openSet = [];
-    _this.totalPath = [];
-    _this.goal = {
-      x: _this.width - _this.cellWidth,
-      y: _this.height - _this.cellHeight
-    };
-    _this.gScore = 0;
-    _this.diagonals = true;
+    _this.circles = [];
+    _this.bullets = [];
+    _this.particles = [];
+    _this.colors = ['rgb(200, 148, 82)', 'rgb(193, 200, 82)', 'rgb(134, 200, 82)', 'rgb(82, 200, 89)', 'rgb(82, 200, 148)', 'rgb(82, 193, 200)'];
+    _this.health = 20;
+    _this.tank = new _Tank.Tank(_assertThisInitialized(_this), _this.canvas.width - 30, _this.canvas.height / 2 - 50, 50, 100);
+    window.addEventListener("keydown", function (e) {
+      if (e.keyCode === 38) {
+        _this.tank.isMoving = true;
+        _this.tank.dir = 1;
+      }
 
-    _this.generateCells();
+      if (e.keyCode === 40) {
+        _this.tank.isMoving = true;
+        _this.tank.dir = 0;
+      }
+    });
+    window.addEventListener('keyup', function (e) {
+      if (e.keyCode === 32) {
+        _this.tank.shoot();
+      }
 
-    var startCell = _this.cells[0];
-    startCell.wall = false; // Goal
-
-    var goalCell = _this.cells[_this.cells.length - 1];
-    goalCell.wall = false; // For the first node, that value is completely heuristic.
-
-    startCell.fScore = _src.Calc.dist(startCell.x, startCell.y, _this.goal.x, _this.goal.y);
-    _this.openSet = [startCell];
+      _this.tank.isMoving = false;
+    }, false);
+    setInterval(function () {
+      _this.createCircle();
+    }, 1000);
 
     _this.init();
 
     return _this;
   }
 
-  _createClass(AStar, [{
-    key: "generateGrid",
-    value: function generateGrid() {
-      for (var x = 0; x < this.cols; x++) {
-        this.ctx.beginPath();
-        this.ctx.moveTo(0, x * this.cellHeight);
-        this.ctx.lineTo(this.canvas.width, x * this.cellHeight);
-        this.ctx.strokeStyle = "#666";
-        this.ctx.stroke();
-      }
+  _createClass(BallsAndTanks, [{
+    key: "bg",
+    value: function bg() {
+      var grd = this.ctx.createLinearGradient(0, this.canvas.height, 0, 0);
+      grd.addColorStop(0, "#1f3342");
+      grd.addColorStop(1, "black");
+      this.ctx.fillStyle = grd;
+      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+  }, {
+    key: "createCircle",
+    value: function createCircle() {
+      var angle = 0;
 
-      for (var y = 0; y < this.cols; y++) {
-        this.ctx.beginPath();
-        this.ctx.moveTo(y * this.cellWidth, 0);
-        this.ctx.lineTo(y * this.cellWidth, this.canvas.height);
-        this.ctx.strokeStyle = "#666";
-        this.ctx.stroke();
+      var r = _src.Calc.random(10, 20);
+
+      var pos = _src.Calc.createVector(-r, _src.Calc.random(r, this.height - r));
+
+      var velocity = _src.Calc.random(1, 3);
+
+      var acceleration = Math.random();
+
+      var color = _src.Calc.random(0, 5);
+
+      this.circles.push(new _Circle.Circle(this, pos, r, velocity, acceleration, angle, this.colors[color]));
+    }
+  }, {
+    key: "createCircles",
+    value: function createCircles() {
+      for (var i = 0; i < 3; i++) {
+        this.createCircle();
       }
     }
   }, {
-    key: "generateCells",
-    value: function generateCells() {
-      for (var x = 0; x < this.cols; x++) {
-        for (var y = 0; y < this.rows; y++) {
-          this.cells.push(new Cell(this.ctx, this.cellWidth, this.cellHeight, this.cellWidth * y, this.cellHeight * x));
-        }
+    key: "createParticles",
+    value: function createParticles(x, y) {
+      var color = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'red';
+
+      for (var i = 0; i < 100; i++) {
+        var angle = Math.random() * Math.PI * 2;
+        var velocity = Math.random();
+        var acceleration = Math.random() / 50;
+        var vx = x + Math.cos(angle) * velocity;
+        var vy = y + Math.sin(angle) * velocity;
+
+        var r = _src.Calc.random(1, 5);
+
+        this.particles.push(new _Particle.SquareParticle(this, _src.Calc.create3DVector(vx, vy), r, r, color, velocity, acceleration, angle));
       }
     }
   }, {
-    key: "getNeighbors",
-    value: function getNeighbors(cell) {
-      var index = this.cells.map(function (e) {
-        return e;
-      }).indexOf(cell);
-      var top = index - this.rows;
-      var right = index + 1;
-      var bottom = index + this.cols;
-      var left = index - 1;
+    key: "barrelDebree",
+    value: function barrelDebree(x, y) {
+      var color = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'red';
 
-      if (this.cells[top]) {
-        cell.neighbors.push(this.cells[top]);
+      for (var i = 0; i < 100; i++) {
+        var angle = Math.random() * Math.PI;
+        var velocity = Math.random();
+        var acceleration = Math.random() / 50;
+        var vx = x + Math.cos(angle) * velocity;
+        var vy = y + Math.sin(angle) * velocity;
+
+        var r = _src.Calc.random(1, 5);
+
+        this.particles.push(new _Particle.SquareParticle(this, _src.Calc.create3DVector(vx, vy), r, r, color, velocity, acceleration, angle));
       }
-
-      if (this.cells[bottom]) {
-        cell.neighbors.push(this.cells[bottom]);
-      }
-
-      if (this.cells[left] && cell.x > 0) {
-        cell.neighbors.push(this.cells[left]);
-      }
-
-      if (this.cells[right] && cell.x + this.cellWidth < this.width) {
-        cell.neighbors.push(this.cells[right]);
-      }
-
-      if (this.diagonals) {
-        var topRight = index + 1 - this.rows;
-        var topLeft = index - 1 - this.rows;
-        var bottomRight = index + 1 + this.cols;
-        var bottomLeft = index - 1 + this.cols;
-
-        if (this.cells[topRight] && cell.x + this.cellWidth < this.width) {
-          cell.neighbors.push(this.cells[topRight]);
-        }
-
-        if (this.cells[topLeft] && cell.x > 0) {
-          cell.neighbors.push(this.cells[topLeft]);
-        }
-
-        if (this.cells[bottomRight] && cell.x + this.cellWidth < this.width) {
-          cell.neighbors.push(this.cells[bottomRight]);
-        }
-
-        if (this.cells[bottomLeft] && cell.x > 0) {
-          cell.neighbors.push(this.cells[bottomLeft]);
-        }
-      }
-    }
-  }, {
-    key: "getLowestFScoreNode",
-    value: function getLowestFScoreNode() {
-      var lowestScoringNode = this.openSet.reduce(function (res, obj) {
-        return obj.fScore < res.fScore ? obj : res;
-      });
-
-      var remainingOpenSet = _toConsumableArray(this.openSet).filter(function (node) {
-        return node !== lowestScoringNode;
-      });
-
-      return [lowestScoringNode, remainingOpenSet];
-    }
-  }, {
-    key: "hasReachedGoal",
-    value: function hasReachedGoal(currentCell) {
-      return currentCell.x === this.goal.x && currentCell.y === this.goal.y;
-    }
-  }, {
-    key: "reconstructPath",
-    value: function reconstructPath(currentCell) {
-      var totalPath = [currentCell];
-
-      while (currentCell.cameFrom) {
-        totalPath.push(currentCell.cameFrom);
-        currentCell = currentCell.cameFrom;
-      }
-
-      return totalPath;
     }
   }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
-
-      this.generateGrid(); // Stop animation when openSet is empty
-
-      this.stopAnimation(!this.openSet.length); // A STAR ALGORITHM
-      // Render cells?
-
+      this.bg();
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
       var _iteratorError = undefined;
 
       try {
-        for (var _iterator = this.cells[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var cell = _step.value;
-          cell.render();
-        } // get node with lowset fScore and remove from set
-
+        for (var _iterator = this.bullets[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var bullet = _step.value;
+          bullet.render();
+        }
       } catch (err) {
         _didIteratorError = true;
         _iteratorError = err;
@@ -874,50 +1302,15 @@ function (_Canvas) {
         }
       }
 
-      var _this$getLowestFScore = this.getLowestFScoreNode(),
-          _this$getLowestFScore2 = _slicedToArray(_this$getLowestFScore, 2),
-          currentCell = _this$getLowestFScore2[0],
-          openSet = _this$getLowestFScore2[1]; // update openSet
-
-
-      this.openSet = openSet; // add current to closedSet
-
-      currentCell.visited = true; // highlight current
-
-      currentCell.render(true); // get neighbors
-
-      this.getNeighbors(currentCell);
+      this.tank.render();
       var _iteratorNormalCompletion2 = true;
       var _didIteratorError2 = false;
       var _iteratorError2 = undefined;
 
       try {
-        var _loop2 = function _loop2() {
-          var neighbor = _step2.value;
-          if (neighbor.visited || neighbor.wall) return "continue";
-
-          var cost = _src.Calc.dist(currentCell.x, currentCell.y, neighbor.x, neighbor.y);
-
-          var tentativeGScore = currentCell.gScore + cost + neighbor.fScore; // if neighbor not in open set
-
-          if (!_this2.openSet.find(function (cell) {
-            return cell === neighbor;
-          })) {
-            _this2.openSet.push(neighbor);
-          } else if (tentativeGScore >= neighbor.gScore) {
-            return "continue";
-          }
-
-          neighbor.renderAsNeighbor();
-          neighbor.cameFrom = currentCell;
-          neighbor.gScore = tentativeGScore;
-          neighbor.fScore = neighbor.gScore + _src.Calc.dist(neighbor.x, neighbor.y, _this2.goal.x, _this2.goal.y);
-        };
-
-        for (var _iterator2 = currentCell.neighbors[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var _ret = _loop2();
-
-          if (_ret === "continue") continue;
+        for (var _iterator2 = this.circles[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var circle = _step2.value;
+          circle.render();
         }
       } catch (err) {
         _didIteratorError2 = true;
@@ -934,58 +1327,45 @@ function (_Canvas) {
         }
       }
 
-      if (this.hasReachedGoal(currentCell)) {
-        var _path = this.reconstructPath(currentCell);
+      var _iteratorNormalCompletion3 = true;
+      var _didIteratorError3 = false;
+      var _iteratorError3 = undefined;
 
-        console.warn('You reached the goal!', _path);
-        var _iteratorNormalCompletion3 = true;
-        var _didIteratorError3 = false;
-        var _iteratorError3 = undefined;
+      try {
+        for (var _iterator3 = this.circles[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+          var _circle = _step3.value;
 
+          _circle.update(this.bullets);
+        }
+      } catch (err) {
+        _didIteratorError3 = true;
+        _iteratorError3 = err;
+      } finally {
         try {
-          var _loop = function _loop() {
-            var cell = _step3.value;
-            cell.render(_path.find(function (c) {
-              return c === cell;
-            }));
-          };
-
-          for (var _iterator3 = this.cells[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-            _loop();
+          if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
+            _iterator3.return();
           }
-        } catch (err) {
-          _didIteratorError3 = true;
-          _iteratorError3 = err;
         } finally {
-          try {
-            if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
-              _iterator3.return();
-            }
-          } finally {
-            if (_didIteratorError3) {
-              throw _iteratorError3;
-            }
+          if (_didIteratorError3) {
+            throw _iteratorError3;
           }
         }
-
-        this.stopAnimation();
       }
 
-      var path = this.reconstructPath(currentCell);
       var _iteratorNormalCompletion4 = true;
       var _didIteratorError4 = false;
       var _iteratorError4 = undefined;
 
       try {
-        var _loop3 = function _loop3() {
-          var cell = _step4.value;
-          cell.render(path.find(function (c) {
-            return c === cell;
-          }));
-        };
+        for (var _iterator4 = this.particles[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+          var particle = _step4.value;
 
-        for (var _iterator4 = this.cells[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-          _loop3();
+          if (particle.alpha <= 0) {
+            this.particles.splice(particle, 1);
+            continue;
+          }
+
+          particle.render();
         }
       } catch (err) {
         _didIteratorError4 = true;
@@ -1001,14 +1381,26 @@ function (_Canvas) {
           }
         }
       }
+
+      this.ctx.font = '48px serif';
+      this.ctx.fillStyle = '#fff';
+      this.ctx.fillText("Health: ".concat(this.health), 10, 50);
+
+      if (this.health <= 0) {
+        this.ctx.font = '68px serif';
+        this.ctx.fillStyle = '#fff';
+        var textLength = this.ctx.measureText("GAME OVER");
+        this.ctx.fillText("GAME OVER", this.canvas.width / 2 - textLength.width / 2, this.canvas.height / 2);
+        this.stopAnimation();
+      }
     }
   }]);
 
-  return AStar;
+  return BallsAndTanks;
 }(_src.Canvas);
 
-new AStar();
-},{"../src":"../src/index.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+new BallsAndTanks();
+},{"../src":"../src/index.js","./classes/Tank":"classes/Tank.js","./classes/Circle":"classes/Circle.js","./classes/Particle":"classes/Particle.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -1211,5 +1603,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../node_modules/parcel/src/builtins/hmr-runtime.js","1.js"], null)
-//# sourceMappingURL=1.39a2031f.js.map
+},{}]},{},["../node_modules/parcel/src/builtins/hmr-runtime.js","6.js"], null)
+//# sourceMappingURL=6.434b7275.js.map

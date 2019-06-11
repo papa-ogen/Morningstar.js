@@ -1,4 +1,4 @@
-import { Canvas, Calc } from '../../src'
+import { Canvas, Calc } from '../src'
 
 class Flake {
   constructor(morningstar, pos, r, vel, acc, alpha = 1) {
@@ -67,7 +67,7 @@ class Snow extends Canvas {
   }
 
   loadLogo() {
-    this.image.src = require('../img/logo.png');
+    this.image.src = require('/img/logo.png');
     this.image.onload = () => {
       this.loaded = true
     }

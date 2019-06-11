@@ -1,4 +1,4 @@
-import { Canvas } from '../../src'
+import { Canvas } from '../src'
 
 // https://en.wikipedia.org/wiki/Maze_generation_algorithm
 

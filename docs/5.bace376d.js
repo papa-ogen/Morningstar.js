@@ -597,121 +597,137 @@ var _Canvas = _interopRequireDefault(require("./Canvas"));
 var _Vector = _interopRequireDefault(require("./Vector"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./Calc":"../src/Calc.js","./Canvas":"../src/Canvas.js","./Vector":"../src/Vector.js"}],"index.js":[function(require,module,exports) {
+},{"./Calc":"../src/Calc.js","./Canvas":"../src/Canvas.js","./Vector":"../src/Vector.js"}],"5.js":[function(require,module,exports) {
 "use strict";
 
 var _src = require("../src");
 
-var vectorA = _src.Calc.createVector(500, 500);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-var vectorB = _src.Calc.createVector(100, 100);
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-var vectorC = _src.Calc.createVector(110, 110);
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-console.log("original", vectorA, vectorB, vectorC);
-vectorA.mult(10);
-console.log("mult", vectorA);
-vectorA.div(2, 4);
-console.log("div", vectorA);
-vectorA.add(2, 4);
-console.log("add", vectorA);
-vectorA.sub(20, 9);
-console.log("sub", vectorA);
-vectorA.limit(25);
-console.log("limit to 25", vectorA);
-vectorA.limit(10);
-console.log("limit to 10", vectorA);
-vectorA.add(200);
-console.log("add 200", vectorA);
-vectorA.limit(200);
-console.log("limit to 200", vectorA);
-vectorA.add(250);
-console.log("add 250", vectorA);
-vectorA.unLimit();
-vectorA.x = 5000;
-console.log("unlimit vector x", vectorA.x);
-console.log("heading", vectorA.heading(vectorA.x + 100, vectorA.y + 100));
-vectorA.limit(0.1, 0.5);
-console.log("limit to 0.1, 0.5", vectorA);
-console.log("constrain", _src.Calc.constrain(50, 0, 30));
-console.log("constrain", _src.Calc.constrain(-50, 0, 30));
-console.log("constrain", _src.Calc.constrain(17, 0, 30));
-console.log("constrain", _src.Calc.constrain(-3, -5, 0));
-console.log("dist", _src.Calc.dist(vectorA.x, vectorA.y, vectorB.x, vectorB.y));
-console.log("dist", _src.Calc.dist(vectorB.x, vectorB.y, vectorC.x, vectorC.y));
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-var heading = _src.Calc.heading(100, 10, -150, 50);
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-console.log("General heading", heading);
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var toDegrees = _src.Calc.toDegrees(heading);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-console.log("Radian to degrees", toDegrees);
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-var toRadian = _src.Calc.toRadians(toDegrees);
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-console.log("Degrees to radians", toRadian); // /***************** EXAMPLE *****************/
-// class Particle {
-//   constructor(ctx, x, y, width, height) {
-//     this.ctx = ctx;
-//     this.r = 5;
-//     this.pos = MS.createVector(x, y);
-//     this.vel = MS.createRandomVector();
-//     this.acc = MS.createRandomVector();
-//   }
-//   update() {
-//     // Change position
-//     this.pos.x += this.vel.x;
-//     this.pos.y += this.vel.y;
-//     // Add acceleration
-//     this.vel.x += this.acc.x;
-//     this.vel.y += this.acc.y;
-//     if (this.acc.x > 0) {
-//       this.acc.x -= 0.1
-//       this.acc.y -= 0.1
-//     }
-//     if (this.pos.x >= canvasWidth || this.pos.x <= 0) {
-//       this.vel.x *= -1;
-//     }
-//     if (this.pos.y >= canvasHeight || this.pos.y <= 0) {
-//       this.vel.y *= -1;
-//     }
-//   }
-//   render() {
-//     this.ctx.beginPath();
-//     this.ctx.arc(this.pos.x, this.pos.y, this.r, 0, 2 * Math.PI);
-//     ctx.strokeStyle = "#FF0000";
-//     this.ctx.stroke();
-//   }
-// }
-// const canvas = document.getElementById("canvas");
-// const ctx = canvas.getContext("2d");
-// const canvasWidth = 400;
-// const canvasHeight = 400;
-// const particles = [];
-// let stop = false;
-// function createParticles() {
-//   for (let i = 0; i < 5; i++) {
-//     const x = 100;
-//     const y = 100;
-//     particles.push(new Particle(ctx, x, y));
-//   }
-// }
-// function clearCanvas() {
-//   ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-// }
-// function draw(timestamp) {
-//   clearCanvas();
-//   for (const particle of particles) {
-//     particle.render();
-//     particle.update();
-//   }
-//   if (!stop) {
-//     window.requestAnimationFrame(draw);
-//   }
-// }
-// createParticles();
-// draw();
+var Bob =
+/*#__PURE__*/
+function () {
+  function Bob(ms, r, a) {
+    _classCallCheck(this, Bob);
+
+    this.ms = ms;
+    this.r = r;
+    this.a = a;
+  }
+
+  _createClass(Bob, [{
+    key: "render",
+    value: function render() {
+      var ms = this.ms,
+          r = this.r,
+          a = this.a;
+      var x = r * Math.cos(a);
+      var y = r * Math.sin(a);
+      ms.line({
+        x1: 0,
+        y1: 0,
+        x2: x,
+        y2: y
+      });
+      ms.arc({
+        x: x,
+        y: y,
+        r: 30,
+        color: '#fff'
+      });
+    }
+  }]);
+
+  return Bob;
+}();
+
+var Pendulum =
+/*#__PURE__*/
+function (_Canvas) {
+  _inherits(Pendulum, _Canvas);
+
+  function Pendulum() {
+    var _this;
+
+    _classCallCheck(this, Pendulum);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Pendulum).call(this, {
+      fps: 60,
+      bgColor: 'rgb(50, 50, 50)',
+      width: window.innerWidth,
+      height: window.innerHeight
+    }));
+    _this.angle = Math.PI / 4;
+    _this.radius = 150;
+    _this._velocity = 0.01;
+    _this.acceleration = 0.001;
+    _this.max_velocity = 0.5;
+    _this.amplitude = 360;
+    _this.period = 200;
+    _this.bob = new Bob(_assertThisInitialized(_this), _this.radius, _this.angle);
+
+    _this.init();
+
+    return _this;
+  }
+
+  _createClass(Pendulum, [{
+    key: "bg",
+    value: function bg() {
+      var grd = this.ctx.createLinearGradient(0, this.canvas.height, 0, 0);
+      grd.addColorStop(0, "#1f3342");
+      grd.addColorStop(1, "black");
+      this.ctx.fillStyle = grd;
+      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+  }, {
+    key: "render",
+    value: function render(time) {
+      this.bg();
+      this.ctx.translate(this.canvas.width / 2, this.canvas.height / 2); // this.bob.render()
+      // this.angle += this.velocity
+      // this.velocity += this.acceleration
+      // this.bob.a = this.angle
+
+      var x = this.amplitude * Math.sin(time / this.period);
+      this.arc({
+        x: x,
+        y: 0,
+        r: 30,
+        color: '#fff'
+      });
+      this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+    }
+  }, {
+    key: "velocity",
+    set: function set(velocity) {
+      this._velocity = velocity > this.max_velocity ? this.max_velocity : velocity;
+    },
+    get: function get() {
+      return this._velocity;
+    }
+  }]);
+
+  return Pendulum;
+}(_src.Canvas);
+
+new Pendulum();
 },{"../src":"../src/index.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -915,5 +931,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../node_modules/parcel/src/builtins/hmr-runtime.js","index.js"], null)
-//# sourceMappingURL=examples.e31bb0bc.js.map
+},{}]},{},["../node_modules/parcel/src/builtins/hmr-runtime.js","5.js"], null)
+//# sourceMappingURL=5.bace376d.js.map

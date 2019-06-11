@@ -597,121 +597,267 @@ var _Canvas = _interopRequireDefault(require("./Canvas"));
 var _Vector = _interopRequireDefault(require("./Vector"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./Calc":"../src/Calc.js","./Canvas":"../src/Canvas.js","./Vector":"../src/Vector.js"}],"index.js":[function(require,module,exports) {
+},{"./Calc":"../src/Calc.js","./Canvas":"../src/Canvas.js","./Vector":"../src/Vector.js"}],"2.js":[function(require,module,exports) {
 "use strict";
 
 var _src = require("../src");
 
-var vectorA = _src.Calc.createVector(500, 500);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-var vectorB = _src.Calc.createVector(100, 100);
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-var vectorC = _src.Calc.createVector(110, 110);
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-console.log("original", vectorA, vectorB, vectorC);
-vectorA.mult(10);
-console.log("mult", vectorA);
-vectorA.div(2, 4);
-console.log("div", vectorA);
-vectorA.add(2, 4);
-console.log("add", vectorA);
-vectorA.sub(20, 9);
-console.log("sub", vectorA);
-vectorA.limit(25);
-console.log("limit to 25", vectorA);
-vectorA.limit(10);
-console.log("limit to 10", vectorA);
-vectorA.add(200);
-console.log("add 200", vectorA);
-vectorA.limit(200);
-console.log("limit to 200", vectorA);
-vectorA.add(250);
-console.log("add 250", vectorA);
-vectorA.unLimit();
-vectorA.x = 5000;
-console.log("unlimit vector x", vectorA.x);
-console.log("heading", vectorA.heading(vectorA.x + 100, vectorA.y + 100));
-vectorA.limit(0.1, 0.5);
-console.log("limit to 0.1, 0.5", vectorA);
-console.log("constrain", _src.Calc.constrain(50, 0, 30));
-console.log("constrain", _src.Calc.constrain(-50, 0, 30));
-console.log("constrain", _src.Calc.constrain(17, 0, 30));
-console.log("constrain", _src.Calc.constrain(-3, -5, 0));
-console.log("dist", _src.Calc.dist(vectorA.x, vectorA.y, vectorB.x, vectorB.y));
-console.log("dist", _src.Calc.dist(vectorB.x, vectorB.y, vectorC.x, vectorC.y));
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var heading = _src.Calc.heading(100, 10, -150, 50);
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-console.log("General heading", heading);
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var toDegrees = _src.Calc.toDegrees(heading);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-console.log("Radian to degrees", toDegrees);
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-var toRadian = _src.Calc.toRadians(toDegrees);
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-console.log("Degrees to radians", toRadian); // /***************** EXAMPLE *****************/
-// class Particle {
-//   constructor(ctx, x, y, width, height) {
-//     this.ctx = ctx;
-//     this.r = 5;
-//     this.pos = MS.createVector(x, y);
-//     this.vel = MS.createRandomVector();
-//     this.acc = MS.createRandomVector();
-//   }
-//   update() {
-//     // Change position
-//     this.pos.x += this.vel.x;
-//     this.pos.y += this.vel.y;
-//     // Add acceleration
-//     this.vel.x += this.acc.x;
-//     this.vel.y += this.acc.y;
-//     if (this.acc.x > 0) {
-//       this.acc.x -= 0.1
-//       this.acc.y -= 0.1
-//     }
-//     if (this.pos.x >= canvasWidth || this.pos.x <= 0) {
-//       this.vel.x *= -1;
-//     }
-//     if (this.pos.y >= canvasHeight || this.pos.y <= 0) {
-//       this.vel.y *= -1;
-//     }
-//   }
-//   render() {
-//     this.ctx.beginPath();
-//     this.ctx.arc(this.pos.x, this.pos.y, this.r, 0, 2 * Math.PI);
-//     ctx.strokeStyle = "#FF0000";
-//     this.ctx.stroke();
-//   }
-// }
-// const canvas = document.getElementById("canvas");
-// const ctx = canvas.getContext("2d");
-// const canvasWidth = 400;
-// const canvasHeight = 400;
-// const particles = [];
-// let stop = false;
-// function createParticles() {
-//   for (let i = 0; i < 5; i++) {
-//     const x = 100;
-//     const y = 100;
-//     particles.push(new Particle(ctx, x, y));
-//   }
-// }
-// function clearCanvas() {
-//   ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-// }
-// function draw(timestamp) {
-//   clearCanvas();
-//   for (const particle of particles) {
-//     particle.render();
-//     particle.update();
-//   }
-//   if (!stop) {
-//     window.requestAnimationFrame(draw);
-//   }
-// }
-// createParticles();
-// draw();
+// https://en.wikipedia.org/wiki/Maze_generation_algorithm
+var Cell =
+/*#__PURE__*/
+function () {
+  function Cell(morningstar, width, height, x, y) {
+    _classCallCheck(this, Cell);
+
+    this.ms = morningstar;
+    this.ctx = morningstar.ctx;
+    this.width = width;
+    this.height = height;
+    this.x = x;
+    this.y = y;
+    this.visited = false;
+    this.neighbors = []; // Top, Right, Bottom, Left
+
+    this.walls = [1, 1, 1, 1];
+  }
+
+  _createClass(Cell, [{
+    key: "show",
+    value: function show(currentCell) {
+      if (this.walls[0]) {
+        this.ms.line({
+          x1: this.x,
+          y1: this.y,
+          x2: this.x + this.width,
+          y2: this.y
+        });
+      }
+
+      if (this.walls[1]) {
+        this.ms.line({
+          x1: this.x + this.width,
+          y1: this.y,
+          x2: this.x + this.width,
+          y2: this.y + this.height
+        });
+      }
+
+      if (this.walls[2]) {
+        this.ms.line({
+          x1: this.x + this.width,
+          y1: this.y + this.height,
+          x2: this.x,
+          y2: this.y + this.height
+        });
+      }
+
+      if (this.walls[3]) {
+        this.ms.line({
+          x1: this.x,
+          y1: this.y + this.height,
+          x2: this.x,
+          y2: this.y
+        });
+      }
+
+      if (currentCell) {
+        this.ms.rect({
+          x: this.x,
+          y: this.y,
+          width: this.width,
+          height: this.height,
+          color: '#9bf442'
+        });
+      }
+    }
+  }, {
+    key: "createWall",
+    value: function createWall(x1, y1, x2, y2) {
+      var shadow = {
+        offsetX: 2
+      };
+      this.ms.line({
+        x1: x1,
+        y1: y1,
+        x2: x2,
+        y2: y2,
+        shadow: shadow
+      });
+    }
+  }]);
+
+  return Cell;
+}();
+
+var Maze =
+/*#__PURE__*/
+function (_Canvas) {
+  _inherits(Maze, _Canvas);
+
+  function Maze() {
+    var _this;
+
+    _classCallCheck(this, Maze);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Maze).call(this, {
+      bgColor: '#666',
+      fps: 60
+    }));
+    _this.cols = 25;
+    _this.rows = 25;
+    _this.cellWidth = _this.canvas.width / _this.cols;
+    _this.cellHeight = _this.canvas.height / _this.rows;
+    _this.cells = [];
+    _this.stack = [];
+
+    _this.generateCells();
+
+    _this.getNeighbors();
+
+    _this.currentCell = _this.cells[0];
+    _this.currentCell.visited = true;
+
+    _this.stack.push(_this.currentCell);
+
+    _this.init();
+
+    return _this;
+  }
+
+  _createClass(Maze, [{
+    key: "generateCells",
+    value: function generateCells() {
+      for (var x = 0; x < this.cols; x++) {
+        for (var y = 0; y < this.rows; y++) {
+          this.cells.push(new Cell(this, this.cellWidth, this.cellHeight, this.cellWidth * y, this.cellHeight * x));
+        }
+      }
+    }
+  }, {
+    key: "getNeighbors",
+    value: function getNeighbors() {
+      for (var i = 0; i < this.cells.length - 1; i++) {
+        var cell = this.cells[i];
+        var top = i - this.rows;
+        var right = i + 1;
+        var bottom = i + this.cols;
+        var left = i - 1;
+
+        if (this.cells[top]) {
+          cell.neighbors.push(this.cells[top]);
+        }
+
+        if (this.cells[bottom]) {
+          cell.neighbors.push(this.cells[bottom]);
+        }
+
+        if (this.cells[left] && cell.x > 0) {
+          cell.neighbors.push(this.cells[left]);
+        }
+
+        if (this.cells[right] && cell.x + this.cellWidth < this.width) {
+          cell.neighbors.push(this.cells[right]);
+        }
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var neighbors = this.currentCell.neighbors.filter(function (neighbor) {
+        return !neighbor.visited;
+      });
+
+      if (neighbors.length) {
+        var neighbor;
+
+        if (neighbors.length === 1) {
+          neighbor = neighbors[0];
+        } else {
+          neighbor = neighbors[Math.floor(Math.random() * neighbors.length)];
+        } // remove wall between neighbor and current cell
+
+
+        if (this.currentCell.x < neighbor.x) {
+          // remove current right- and neighbor left wall
+          this.currentCell.walls[1] = 0;
+          neighbor.walls[3] = 0;
+        } else if (this.currentCell.x > neighbor.x) {
+          // remove current left- and neighbor right wall
+          this.currentCell.walls[3] = 0;
+          neighbor.walls[1] = 0;
+        } else if (this.currentCell.y > neighbor.y) {
+          // remove current top- and neighbor bottom wall
+          this.currentCell.walls[0] = 0;
+          neighbor.walls[2] = 0;
+        } else if (this.currentCell.y < neighbor.y) {
+          // remove current bottom- and neighbor top wall
+          this.currentCell.walls[2] = 0;
+          neighbor.walls[0] = 0;
+        }
+
+        neighbor.visited = true;
+        this.stack.push(neighbor);
+        this.currentCell = neighbor;
+      } else {
+        // Take random unvisited cell
+        this.currentCell = this.stack.splice(0, 1)[0];
+      }
+
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = this.cells[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var cell = _step.value;
+          cell.show(this.currentCell === cell);
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return != null) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      if (this.cells.every(function (cell) {
+        return cell.visited;
+      })) {
+        console.warn("Maze Complete");
+        this.stopAnimation();
+      }
+    }
+  }]);
+
+  return Maze;
+}(_src.Canvas);
+
+new Maze();
 },{"../src":"../src/index.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -915,5 +1061,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../node_modules/parcel/src/builtins/hmr-runtime.js","index.js"], null)
-//# sourceMappingURL=examples.e31bb0bc.js.map
+},{}]},{},["../node_modules/parcel/src/builtins/hmr-runtime.js","2.js"], null)
+//# sourceMappingURL=2.652fa5c7.js.map

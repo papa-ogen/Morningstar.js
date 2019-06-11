@@ -1,5 +1,5 @@
-import { Canvas, Calc } from '../../src'
-import { SquareParticle } from '../classes/Particle'
+import { Canvas, Calc } from '../src'
+import { SquareParticle } from './classes/Particle'
 
 class Circle {
   constructor(morningstar, pos, r, vel, acc, angle, color) {

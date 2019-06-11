@@ -597,121 +597,177 @@ var _Canvas = _interopRequireDefault(require("./Canvas"));
 var _Vector = _interopRequireDefault(require("./Vector"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./Calc":"../src/Calc.js","./Canvas":"../src/Canvas.js","./Vector":"../src/Vector.js"}],"index.js":[function(require,module,exports) {
+},{"./Calc":"../src/Calc.js","./Canvas":"../src/Canvas.js","./Vector":"../src/Vector.js"}],"7.js":[function(require,module,exports) {
 "use strict";
 
 var _src = require("../src");
 
-var vectorA = _src.Calc.createVector(500, 500);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-var vectorB = _src.Calc.createVector(100, 100);
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-var vectorC = _src.Calc.createVector(110, 110);
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-console.log("original", vectorA, vectorB, vectorC);
-vectorA.mult(10);
-console.log("mult", vectorA);
-vectorA.div(2, 4);
-console.log("div", vectorA);
-vectorA.add(2, 4);
-console.log("add", vectorA);
-vectorA.sub(20, 9);
-console.log("sub", vectorA);
-vectorA.limit(25);
-console.log("limit to 25", vectorA);
-vectorA.limit(10);
-console.log("limit to 10", vectorA);
-vectorA.add(200);
-console.log("add 200", vectorA);
-vectorA.limit(200);
-console.log("limit to 200", vectorA);
-vectorA.add(250);
-console.log("add 250", vectorA);
-vectorA.unLimit();
-vectorA.x = 5000;
-console.log("unlimit vector x", vectorA.x);
-console.log("heading", vectorA.heading(vectorA.x + 100, vectorA.y + 100));
-vectorA.limit(0.1, 0.5);
-console.log("limit to 0.1, 0.5", vectorA);
-console.log("constrain", _src.Calc.constrain(50, 0, 30));
-console.log("constrain", _src.Calc.constrain(-50, 0, 30));
-console.log("constrain", _src.Calc.constrain(17, 0, 30));
-console.log("constrain", _src.Calc.constrain(-3, -5, 0));
-console.log("dist", _src.Calc.dist(vectorA.x, vectorA.y, vectorB.x, vectorB.y));
-console.log("dist", _src.Calc.dist(vectorB.x, vectorB.y, vectorC.x, vectorC.y));
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-var heading = _src.Calc.heading(100, 10, -150, 50);
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-console.log("General heading", heading);
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var toDegrees = _src.Calc.toDegrees(heading);
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
-console.log("Radian to degrees", toDegrees);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var toRadian = _src.Calc.toRadians(toDegrees);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-console.log("Degrees to radians", toRadian); // /***************** EXAMPLE *****************/
-// class Particle {
-//   constructor(ctx, x, y, width, height) {
-//     this.ctx = ctx;
-//     this.r = 5;
-//     this.pos = MS.createVector(x, y);
-//     this.vel = MS.createRandomVector();
-//     this.acc = MS.createRandomVector();
-//   }
-//   update() {
-//     // Change position
-//     this.pos.x += this.vel.x;
-//     this.pos.y += this.vel.y;
-//     // Add acceleration
-//     this.vel.x += this.acc.x;
-//     this.vel.y += this.acc.y;
-//     if (this.acc.x > 0) {
-//       this.acc.x -= 0.1
-//       this.acc.y -= 0.1
-//     }
-//     if (this.pos.x >= canvasWidth || this.pos.x <= 0) {
-//       this.vel.x *= -1;
-//     }
-//     if (this.pos.y >= canvasHeight || this.pos.y <= 0) {
-//       this.vel.y *= -1;
-//     }
-//   }
-//   render() {
-//     this.ctx.beginPath();
-//     this.ctx.arc(this.pos.x, this.pos.y, this.r, 0, 2 * Math.PI);
-//     ctx.strokeStyle = "#FF0000";
-//     this.ctx.stroke();
-//   }
-// }
-// const canvas = document.getElementById("canvas");
-// const ctx = canvas.getContext("2d");
-// const canvasWidth = 400;
-// const canvasHeight = 400;
-// const particles = [];
-// let stop = false;
-// function createParticles() {
-//   for (let i = 0; i < 5; i++) {
-//     const x = 100;
-//     const y = 100;
-//     particles.push(new Particle(ctx, x, y));
-//   }
-// }
-// function clearCanvas() {
-//   ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-// }
-// function draw(timestamp) {
-//   clearCanvas();
-//   for (const particle of particles) {
-//     particle.render();
-//     particle.update();
-//   }
-//   if (!stop) {
-//     window.requestAnimationFrame(draw);
-//   }
-// }
-// createParticles();
-// draw();
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+// https://codepen.io/xerxesnoble/pen/JNgmJR?editors=0010
+var Particle =
+/*#__PURE__*/
+function () {
+  function Particle(morningstar, pos, width, height, color, speed) {
+    _classCallCheck(this, Particle);
+
+    this.ctx = morningstar.ctx;
+    this.ms = morningstar;
+    this.pos = pos;
+    this.width = width;
+    this.height = height;
+    this.center = _src.Calc.createVector(this.width / 2, this.height / 2);
+    this.color = color;
+    this.speed = speed / 5;
+  }
+
+  _createClass(Particle, [{
+    key: "render",
+    value: function render() {
+      var pos = this.pos,
+          width = this.width,
+          height = this.height,
+          color = this.color;
+      this.ms.rect(_objectSpread({}, pos, {
+        width: width,
+        height: height,
+        color: color
+      }));
+    }
+  }]);
+
+  return Particle;
+}();
+
+var Tween =
+/*#__PURE__*/
+function () {
+  function Tween(duration, object) {
+    _classCallCheck(this, Tween);
+
+    this.duration = duration;
+    this.object = object;
+    this.startTime = null;
+    this.isRunning = false;
+    this.toPos = null;
+  }
+
+  _createClass(Tween, [{
+    key: "start",
+    value: function start(time, toPos) {
+      if (this.isRunning) return;
+      this.startTime = time;
+      this.isRunning = true;
+      this.toPos = {
+        x: toPos.x - this.object.center.x,
+        y: toPos.y - this.object.center.y
+      };
+      this.fromPos = this.object.pos;
+    }
+  }, {
+    key: "animate",
+    value: function animate(time) {
+      var deltaTime = (time - this.startTime) / this.duration;
+
+      if (this.isRunning && this.object.pos.x === this.toPos.x && this.object.pos.y === this.toPos.y) {
+        this.isRunning = false;
+        this.toPos = null;
+        console.log('stop tween');
+      } else if (this.isRunning) {
+        var currentX = this.object.pos.x + (this.toPos.x - this.object.pos.x) * deltaTime;
+        var currentY = this.object.pos.y + (this.toPos.y - this.object.pos.y) * deltaTime; // TODO: implement easings and refactor in to Calc
+
+        var t = this.duration > 0 ? deltaTime : 1;
+        this.object.pos.x = currentX;
+        this.object.pos.y = currentY; // console.log('tween a little', this.object.pos, this.toPos, currentX, currentY)
+      }
+    }
+  }]);
+
+  return Tween;
+}();
+
+var Tweens =
+/*#__PURE__*/
+function (_Canvas) {
+  _inherits(Tweens, _Canvas);
+
+  function Tweens() {
+    var _this;
+
+    _classCallCheck(this, Tweens);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Tweens).call(this, {
+      fps: 60,
+      bgColor: '#AEFEDF',
+      width: window.innerWidth,
+      height: window.innerHeight
+    }));
+    _this.colors = ['rgb(245, 254, 174)', 'rgb(205, 254, 174)', 'rgb(174, 254, 183)', 'rgb(174, 254, 223)', 'rgb(174, 245, 254)', 'rgb(174, 205, 254)'];
+    _this.object1 = new Particle(_assertThisInitialized(_this), _src.Calc.createVector(150, 150), 100, 100, _this.colors[0], 2);
+    _this.object2 = new Particle(_assertThisInitialized(_this), _src.Calc.createVector(100, 50), 50, 50, _this.colors[1], 1);
+    _this.objects = [_this.object1, _this.object2];
+    _this.tweens = [new Tween(1000, _this.object1), new Tween(2000, _this.object2)];
+
+    _this.canvas.addEventListener('mousedown', function (e) {
+      _this.mouseX = e.clientX - _this.canvasPosition.left;
+      _this.mouseY = e.clientY - _this.canvasPosition.top;
+
+      _this.tweens.forEach(function (tween) {
+        tween.start(_this.time, _src.Calc.createVector(_this.mouseX, _this.mouseY));
+      });
+    }, false);
+
+    _this.init();
+
+    return _this;
+  }
+
+  _createClass(Tweens, [{
+    key: "render",
+    value: function render(time) {
+      this.tweens.forEach(function (tween) {
+        tween.animate(time);
+      });
+
+      if (this.tweens.every(function (tween) {
+        return !tween.isRunning;
+      })) {
+        this.canvas.style.cursor = 'move';
+      } else {
+        this.canvas.style.cursor = 'no-drop';
+      }
+
+      this.objects.forEach(function (object) {
+        object.render();
+      });
+    }
+  }]);
+
+  return Tweens;
+}(_src.Canvas);
+
+new Tweens();
 },{"../src":"../src/index.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -915,5 +971,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../node_modules/parcel/src/builtins/hmr-runtime.js","index.js"], null)
-//# sourceMappingURL=examples.e31bb0bc.js.map
+},{}]},{},["../node_modules/parcel/src/builtins/hmr-runtime.js","7.js"], null)
+//# sourceMappingURL=7.8b0bac55.js.map
