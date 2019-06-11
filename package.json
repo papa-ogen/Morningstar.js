@@ -4,7 +4,7 @@
   "description": "A simple Vector library in JavaScript",
   "main": "index.js",
   "scripts": {
-    "start": "parcel examples/index.html",
+    "start": "parcel examples/index.html --out-dir docs",
     "build": "parcel build src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
