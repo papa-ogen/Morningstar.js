@@ -1,4 +1,4 @@
-import { Canvas, Calc } from '../../src/Morningstar'
+import { Canvas, Calc } from '../../src'
 import { SquareParticle } from '../classes/Particle'
 
 class Circle {

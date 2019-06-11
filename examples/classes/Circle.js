@@ -1,4 +1,4 @@
-import { Calc } from '../../src/Morningstar'
+import { Calc } from '../../src'
 
 export class Circle {
   constructor(morningstar, pos, r, vel, acc, angle, color) {

@@ -1,4 +1,4 @@
-import { Canvas, Calc } from '../../src/Morningstar'
+import { Canvas, Calc } from '../../src'
 
 // https://codepen.io/xerxesnoble/pen/JNgmJR?editors=0010
 

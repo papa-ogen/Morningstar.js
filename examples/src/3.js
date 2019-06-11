@@ -1,4 +1,4 @@
-import { Canvas, Calc } from '../../src/Morningstar'
+import { Canvas, Calc } from '../../src'
 
 class Flake {
   constructor(morningstar, pos, r, vel, acc, alpha = 1) {

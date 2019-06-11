@@ -1,4 +1,4 @@
-import { Canvas, Calc } from '../../src/Morningstar'
+import { Canvas, Calc } from '../../src'
 
 // https://en.wikipedia.org/wiki/A*_search_algorithm
 

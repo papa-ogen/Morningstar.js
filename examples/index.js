@@ -1,4 +1,4 @@
-import { Calc as MS } from '../src/Morningstar'
+import { Calc as MS } from '../src'
 
 const vectorA = MS.createVector(500, 500);
 const vectorB = MS.createVector(100, 100);
