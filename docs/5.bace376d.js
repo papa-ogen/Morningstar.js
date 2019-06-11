@@ -412,6 +412,7 @@ function () {
     this.height = config.height || 600;
     this.bgColor = config.bgColor || '#000';
     this.fps = config.fps || 60;
+    this.hook = config.hook;
     this.appendToBody();
     this.canvas = document.querySelector('canvas');
     this.ctx = this.canvas.getContext("2d");
@@ -423,10 +424,16 @@ function () {
     key: "appendToBody",
     value: function appendToBody() {
       var c = document.createElement('canvas');
+      var appendElement = document.body;
       c.width = this.width;
       c.height = this.height;
       c.style.background = this.bgColor;
-      document.body.append(c);
+
+      if (this.hook) {
+        appendElement = document.querySelector(this.hook);
+      }
+
+      appendElement.append(c);
     }
   }, {
     key: "startAnimation",
@@ -670,8 +677,9 @@ function (_Canvas) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Pendulum).call(this, {
       fps: 60,
       bgColor: 'rgb(50, 50, 50)',
-      width: window.innerWidth,
-      height: window.innerHeight
+      width: 800,
+      height: 600,
+      hook: '.main'
     }));
     _this.angle = Math.PI / 4;
     _this.radius = 150;
@@ -756,7 +764,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57495" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63048" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

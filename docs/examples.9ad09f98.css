@@ -1,5 +1,8 @@
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+HK&display=swap');
+
 body {
   margin: 0;
+  font-family: 'Noto Sans HK', sans-serif;
 }
 
 h1 {
@@ -8,6 +11,10 @@ h1 {
 
 a {
   display: block;
+}
+
+.main {
+  padding: 1rem;
 }
 
 /*# sourceMappingURL=examples.9ad09f98.css.map */
