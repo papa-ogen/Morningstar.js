@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "parcel examples/index.html --out-dir docs --public-url ./",
+    "build:dev": "parcel examples/index.html --out-dir dist",
     "build": "parcel build src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
