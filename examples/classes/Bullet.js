@@ -1,4 +1,4 @@
-class Bullet {
+export class Bullet {
   constructor(ms, pos, r) {
     this.ms = ms
     this.r = r

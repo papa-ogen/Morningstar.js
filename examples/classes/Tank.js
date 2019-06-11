@@ -1,4 +1,6 @@
-class Tank {
+import { Bullet } from '../classes/Bullet'
+
+export class Tank {
   constructor(ms, x, y, width, height) {
     this.ms = ms
     this.x = x

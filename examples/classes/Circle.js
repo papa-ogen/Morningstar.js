@@ -1,4 +1,6 @@
-class Circle {
+import { Calc } from '../../src/Morningstar'
+
+export class Circle {
   constructor(morningstar, pos, r, vel, acc, angle, color) {
     this.ctx = morningstar.ctx
     this.ms = morningstar
@@ -125,7 +127,7 @@ class Circle {
 
     if (collidedCircle) {
       const { x: x2, y: y2, r: r2 } = collidedCircle
-      const contactPoint = this.ms.create2DVector((x + x2) * 0.5, (y + y2) * 0.5)
+      const contactPoint = Calc.createVector((x + x2) * 0.5, (y + y2) * 0.5)
       const contactAngle = Math.atan2(x2 - contactPoint.x, y2 - contactPoint.y)
 
       this.angle = Math.sin(contactAngle)
