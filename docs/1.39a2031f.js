@@ -597,12 +597,28 @@ var _Canvas = _interopRequireDefault(require("./Canvas"));
 var _Vector = _interopRequireDefault(require("./Vector"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./Calc":"../src/Calc.js","./Canvas":"../src/Canvas.js","./Vector":"../src/Vector.js"}],"src/2.js":[function(require,module,exports) {
+},{"./Calc":"../src/Calc.js","./Canvas":"../src/Canvas.js","./Vector":"../src/Vector.js"}],"1.js":[function(require,module,exports) {
 "use strict";
 
-var _src = require("../../src");
+var _src = require("../src");
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
@@ -620,206 +636,218 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-// https://en.wikipedia.org/wiki/Maze_generation_algorithm
+// https://en.wikipedia.org/wiki/A*_search_algorithm
 var Cell =
 /*#__PURE__*/
 function () {
-  function Cell(morningstar, width, height, x, y) {
+  function Cell(ctx, width, height, x, y) {
     _classCallCheck(this, Cell);
 
-    this.ms = morningstar;
-    this.ctx = morningstar.ctx;
+    this.ctx = ctx;
     this.width = width;
     this.height = height;
     this.x = x;
     this.y = y;
+    this.cameFrom = null;
+    this.neighbors = [];
     this.visited = false;
-    this.neighbors = []; // Top, Right, Bottom, Left
+    this.gScore = 0;
+    this.fScore = 0;
+    this.wall = false;
 
-    this.walls = [1, 1, 1, 1];
+    if (Math.random() < 0.3) {
+      this.wall = true;
+    }
   }
 
   _createClass(Cell, [{
-    key: "show",
-    value: function show(currentCell) {
-      if (this.walls[0]) {
-        this.ms.line({
-          x1: this.x,
-          y1: this.y,
-          x2: this.x + this.width,
-          y2: this.y
-        });
-      }
-
-      if (this.walls[1]) {
-        this.ms.line({
-          x1: this.x + this.width,
-          y1: this.y,
-          x2: this.x + this.width,
-          y2: this.y + this.height
-        });
-      }
-
-      if (this.walls[2]) {
-        this.ms.line({
-          x1: this.x + this.width,
-          y1: this.y + this.height,
-          x2: this.x,
-          y2: this.y + this.height
-        });
-      }
-
-      if (this.walls[3]) {
-        this.ms.line({
-          x1: this.x,
-          y1: this.y + this.height,
-          x2: this.x,
-          y2: this.y
-        });
-      }
-
-      if (currentCell) {
-        this.ms.rect({
-          x: this.x,
-          y: this.y,
-          width: this.width,
-          height: this.height,
-          color: '#9bf442'
-        });
+    key: "render",
+    value: function render(current) {
+      if (this.wall) {
+        this.ctx.fillStyle = '#000';
+        this.ctx.fillRect(this.x, this.y, this.width, this.height);
+      } else if (current) {
+        this.ctx.fillStyle = '#33ECFF';
+        this.ctx.fillRect(this.x, this.y, this.width, this.height);
+      } else if (this.visited) {
+        this.ctx.fillStyle = '#E7FCD8';
+        this.ctx.fillRect(this.x, this.y, this.width, this.height);
       }
     }
   }, {
-    key: "createWall",
-    value: function createWall(x1, y1, x2, y2) {
-      var shadow = {
-        offsetX: 2
-      };
-      this.ms.line({
-        x1: x1,
-        y1: y1,
-        x2: x2,
-        y2: y2,
-        shadow: shadow
-      });
+    key: "renderAsNeighbor",
+    value: function renderAsNeighbor() {
+      this.ctx.fillStyle = '#AECDFE';
+      this.ctx.fillRect(this.x, this.y, this.width, this.height);
     }
   }]);
 
   return Cell;
 }();
 
-var Maze =
+var AStar =
 /*#__PURE__*/
 function (_Canvas) {
-  _inherits(Maze, _Canvas);
+  _inherits(AStar, _Canvas);
 
-  function Maze() {
+  function AStar() {
     var _this;
 
-    _classCallCheck(this, Maze);
+    _classCallCheck(this, AStar);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Maze).call(this, {
-      bgColor: '#666',
-      fps: 60
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(AStar).call(this, {
+      width: 600,
+      height: 600,
+      bgColor: '#BADA55',
+      fps: 16
     }));
-    _this.cols = 25;
-    _this.rows = 25;
+    _this.cols = 50;
+    _this.rows = 50;
     _this.cellWidth = _this.canvas.width / _this.cols;
     _this.cellHeight = _this.canvas.height / _this.rows;
     _this.cells = [];
-    _this.stack = [];
+    _this.openSet = [];
+    _this.totalPath = [];
+    _this.goal = {
+      x: _this.width - _this.cellWidth,
+      y: _this.height - _this.cellHeight
+    };
+    _this.gScore = 0;
+    _this.diagonals = true;
 
     _this.generateCells();
 
-    _this.getNeighbors();
+    var startCell = _this.cells[0];
+    startCell.wall = false; // Goal
 
-    _this.currentCell = _this.cells[0];
-    _this.currentCell.visited = true;
+    var goalCell = _this.cells[_this.cells.length - 1];
+    goalCell.wall = false; // For the first node, that value is completely heuristic.
 
-    _this.stack.push(_this.currentCell);
+    startCell.fScore = _src.Calc.dist(startCell.x, startCell.y, _this.goal.x, _this.goal.y);
+    _this.openSet = [startCell];
 
     _this.init();
 
     return _this;
   }
 
-  _createClass(Maze, [{
+  _createClass(AStar, [{
+    key: "generateGrid",
+    value: function generateGrid() {
+      for (var x = 0; x < this.cols; x++) {
+        this.ctx.beginPath();
+        this.ctx.moveTo(0, x * this.cellHeight);
+        this.ctx.lineTo(this.canvas.width, x * this.cellHeight);
+        this.ctx.strokeStyle = "#666";
+        this.ctx.stroke();
+      }
+
+      for (var y = 0; y < this.cols; y++) {
+        this.ctx.beginPath();
+        this.ctx.moveTo(y * this.cellWidth, 0);
+        this.ctx.lineTo(y * this.cellWidth, this.canvas.height);
+        this.ctx.strokeStyle = "#666";
+        this.ctx.stroke();
+      }
+    }
+  }, {
     key: "generateCells",
     value: function generateCells() {
       for (var x = 0; x < this.cols; x++) {
         for (var y = 0; y < this.rows; y++) {
-          this.cells.push(new Cell(this, this.cellWidth, this.cellHeight, this.cellWidth * y, this.cellHeight * x));
+          this.cells.push(new Cell(this.ctx, this.cellWidth, this.cellHeight, this.cellWidth * y, this.cellHeight * x));
         }
       }
     }
   }, {
     key: "getNeighbors",
-    value: function getNeighbors() {
-      for (var i = 0; i < this.cells.length - 1; i++) {
-        var cell = this.cells[i];
-        var top = i - this.rows;
-        var right = i + 1;
-        var bottom = i + this.cols;
-        var left = i - 1;
+    value: function getNeighbors(cell) {
+      var index = this.cells.map(function (e) {
+        return e;
+      }).indexOf(cell);
+      var top = index - this.rows;
+      var right = index + 1;
+      var bottom = index + this.cols;
+      var left = index - 1;
 
-        if (this.cells[top]) {
-          cell.neighbors.push(this.cells[top]);
+      if (this.cells[top]) {
+        cell.neighbors.push(this.cells[top]);
+      }
+
+      if (this.cells[bottom]) {
+        cell.neighbors.push(this.cells[bottom]);
+      }
+
+      if (this.cells[left] && cell.x > 0) {
+        cell.neighbors.push(this.cells[left]);
+      }
+
+      if (this.cells[right] && cell.x + this.cellWidth < this.width) {
+        cell.neighbors.push(this.cells[right]);
+      }
+
+      if (this.diagonals) {
+        var topRight = index + 1 - this.rows;
+        var topLeft = index - 1 - this.rows;
+        var bottomRight = index + 1 + this.cols;
+        var bottomLeft = index - 1 + this.cols;
+
+        if (this.cells[topRight] && cell.x + this.cellWidth < this.width) {
+          cell.neighbors.push(this.cells[topRight]);
         }
 
-        if (this.cells[bottom]) {
-          cell.neighbors.push(this.cells[bottom]);
+        if (this.cells[topLeft] && cell.x > 0) {
+          cell.neighbors.push(this.cells[topLeft]);
         }
 
-        if (this.cells[left] && cell.x > 0) {
-          cell.neighbors.push(this.cells[left]);
+        if (this.cells[bottomRight] && cell.x + this.cellWidth < this.width) {
+          cell.neighbors.push(this.cells[bottomRight]);
         }
 
-        if (this.cells[right] && cell.x + this.cellWidth < this.width) {
-          cell.neighbors.push(this.cells[right]);
+        if (this.cells[bottomLeft] && cell.x > 0) {
+          cell.neighbors.push(this.cells[bottomLeft]);
         }
       }
     }
   }, {
-    key: "render",
-    value: function render() {
-      var neighbors = this.currentCell.neighbors.filter(function (neighbor) {
-        return !neighbor.visited;
+    key: "getLowestFScoreNode",
+    value: function getLowestFScoreNode() {
+      var lowestScoringNode = this.openSet.reduce(function (res, obj) {
+        return obj.fScore < res.fScore ? obj : res;
       });
 
-      if (neighbors.length) {
-        var neighbor;
+      var remainingOpenSet = _toConsumableArray(this.openSet).filter(function (node) {
+        return node !== lowestScoringNode;
+      });
 
-        if (neighbors.length === 1) {
-          neighbor = neighbors[0];
-        } else {
-          neighbor = neighbors[Math.floor(Math.random() * neighbors.length)];
-        } // remove wall between neighbor and current cell
+      return [lowestScoringNode, remainingOpenSet];
+    }
+  }, {
+    key: "hasReachedGoal",
+    value: function hasReachedGoal(currentCell) {
+      return currentCell.x === this.goal.x && currentCell.y === this.goal.y;
+    }
+  }, {
+    key: "reconstructPath",
+    value: function reconstructPath(currentCell) {
+      var totalPath = [currentCell];
 
-
-        if (this.currentCell.x < neighbor.x) {
-          // remove current right- and neighbor left wall
-          this.currentCell.walls[1] = 0;
-          neighbor.walls[3] = 0;
-        } else if (this.currentCell.x > neighbor.x) {
-          // remove current left- and neighbor right wall
-          this.currentCell.walls[3] = 0;
-          neighbor.walls[1] = 0;
-        } else if (this.currentCell.y > neighbor.y) {
-          // remove current top- and neighbor bottom wall
-          this.currentCell.walls[0] = 0;
-          neighbor.walls[2] = 0;
-        } else if (this.currentCell.y < neighbor.y) {
-          // remove current bottom- and neighbor top wall
-          this.currentCell.walls[2] = 0;
-          neighbor.walls[0] = 0;
-        }
-
-        neighbor.visited = true;
-        this.stack.push(neighbor);
-        this.currentCell = neighbor;
-      } else {
-        // Take random unvisited cell
-        this.currentCell = this.stack.splice(0, 1)[0];
+      while (currentCell.cameFrom) {
+        totalPath.push(currentCell.cameFrom);
+        currentCell = currentCell.cameFrom;
       }
+
+      return totalPath;
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      this.generateGrid(); // Stop animation when openSet is empty
+
+      this.stopAnimation(!this.openSet.length); // A STAR ALGORITHM
+      // Render cells?
 
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
@@ -828,8 +856,9 @@ function (_Canvas) {
       try {
         for (var _iterator = this.cells[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           var cell = _step.value;
-          cell.show(this.currentCell === cell);
-        }
+          cell.render();
+        } // get node with lowset fScore and remove from set
+
       } catch (err) {
         _didIteratorError = true;
         _iteratorError = err;
@@ -845,20 +874,141 @@ function (_Canvas) {
         }
       }
 
-      if (this.cells.every(function (cell) {
-        return cell.visited;
-      })) {
-        console.warn("Maze Complete");
+      var _this$getLowestFScore = this.getLowestFScoreNode(),
+          _this$getLowestFScore2 = _slicedToArray(_this$getLowestFScore, 2),
+          currentCell = _this$getLowestFScore2[0],
+          openSet = _this$getLowestFScore2[1]; // update openSet
+
+
+      this.openSet = openSet; // add current to closedSet
+
+      currentCell.visited = true; // highlight current
+
+      currentCell.render(true); // get neighbors
+
+      this.getNeighbors(currentCell);
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        var _loop2 = function _loop2() {
+          var neighbor = _step2.value;
+          if (neighbor.visited || neighbor.wall) return "continue";
+
+          var cost = _src.Calc.dist(currentCell.x, currentCell.y, neighbor.x, neighbor.y);
+
+          var tentativeGScore = currentCell.gScore + cost + neighbor.fScore; // if neighbor not in open set
+
+          if (!_this2.openSet.find(function (cell) {
+            return cell === neighbor;
+          })) {
+            _this2.openSet.push(neighbor);
+          } else if (tentativeGScore >= neighbor.gScore) {
+            return "continue";
+          }
+
+          neighbor.renderAsNeighbor();
+          neighbor.cameFrom = currentCell;
+          neighbor.gScore = tentativeGScore;
+          neighbor.fScore = neighbor.gScore + _src.Calc.dist(neighbor.x, neighbor.y, _this2.goal.x, _this2.goal.y);
+        };
+
+        for (var _iterator2 = currentCell.neighbors[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var _ret = _loop2();
+
+          if (_ret === "continue") continue;
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
+            _iterator2.return();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
+
+      if (this.hasReachedGoal(currentCell)) {
+        var _path = this.reconstructPath(currentCell);
+
+        console.warn('You reached the goal!', _path);
+        var _iteratorNormalCompletion3 = true;
+        var _didIteratorError3 = false;
+        var _iteratorError3 = undefined;
+
+        try {
+          var _loop = function _loop() {
+            var cell = _step3.value;
+            cell.render(_path.find(function (c) {
+              return c === cell;
+            }));
+          };
+
+          for (var _iterator3 = this.cells[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+            _loop();
+          }
+        } catch (err) {
+          _didIteratorError3 = true;
+          _iteratorError3 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
+              _iterator3.return();
+            }
+          } finally {
+            if (_didIteratorError3) {
+              throw _iteratorError3;
+            }
+          }
+        }
+
         this.stopAnimation();
+      }
+
+      var path = this.reconstructPath(currentCell);
+      var _iteratorNormalCompletion4 = true;
+      var _didIteratorError4 = false;
+      var _iteratorError4 = undefined;
+
+      try {
+        var _loop3 = function _loop3() {
+          var cell = _step4.value;
+          cell.render(path.find(function (c) {
+            return c === cell;
+          }));
+        };
+
+        for (var _iterator4 = this.cells[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+          _loop3();
+        }
+      } catch (err) {
+        _didIteratorError4 = true;
+        _iteratorError4 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion4 && _iterator4.return != null) {
+            _iterator4.return();
+          }
+        } finally {
+          if (_didIteratorError4) {
+            throw _iteratorError4;
+          }
+        }
       }
     }
   }]);
 
-  return Maze;
+  return AStar;
 }(_src.Canvas);
 
-new Maze();
-},{"../../src":"../src/index.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+new AStar();
+},{"../src":"../src/index.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -1061,5 +1211,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../node_modules/parcel/src/builtins/hmr-runtime.js","src/2.js"], null)
-//# sourceMappingURL=/2.61f21b29.js.map
+},{}]},{},["../node_modules/parcel/src/builtins/hmr-runtime.js","1.js"], null)
+//# sourceMappingURL=/1.39a2031f.js.map
