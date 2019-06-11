@@ -1,5 +1,8 @@
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+HK&display=swap');
+
 body {
   margin: 0;
+  font-family: 'Noto Sans HK', sans-serif;
 }
 
 h1 {

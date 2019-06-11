@@ -63,7 +63,7 @@ class Tween {
 
 class Tweens extends Canvas {
   constructor() {
-    super({ fps: 60, bgColor: '#AEFEDF', width: window.innerWidth, height: window.innerHeight })
+    super({ fps: 60, bgColor: '#AEFEDF', width: 800, height: 600 })
 
     this.colors = [
       'rgb(245, 254, 174)',

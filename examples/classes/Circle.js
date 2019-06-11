@@ -13,6 +13,14 @@ export class Circle {
     this.color = color
   }
 
+  reflectionAngleLeftRight(angle) {
+    return Math.PI - angle
+  }
+
+  reflectionAngleTopBottom(angle) {
+    return -angle
+  }
+
   collision(objects) {
     for (const object of objects) {
       if (object === this) break
@@ -159,11 +167,11 @@ export class Circle {
     }
 
     if (this.y > this.ms.canvas.height - r) {
-      this.angle = Morningstar.reflectionAngleTopBottom(angle)
+      this.angle = this.reflectionAngleTopBottom(angle)
     }
 
     if (this.y < r) {
-      this.angle = Morningstar.reflectionAngleTopBottom(angle)
+      this.angle = this.reflectionAngleTopBottom(angle)
     }
 
     this.ms.arc({ x, y, r, color: this.color })
