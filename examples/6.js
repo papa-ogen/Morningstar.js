@@ -133,15 +133,21 @@ class BallsAndTanks extends Canvas {
       particle.render()
     }
 
-    this.ctx.font = '48px serif';
-    this.ctx.fillStyle = '#fff';
-    this.ctx.fillText(`Health: ${this.health}`, 10, 50);
+    this.text({
+      x: 17,
+      y: 48,
+      fontSize: 44,
+      text: `Health: ${this.health}`,
+      center: false
+    })
 
-    if (this.health <= 0) {
-      this.ctx.font = '68px serif';
-      this.ctx.fillStyle = '#fff';
-      const textLength = this.ctx.measureText(`GAME OVER`);
-      this.ctx.fillText(`GAME OVER`, this.canvas.width / 2 - textLength.width / 2, this.canvas.height / 2);
+    if (this.health> 0) {
+      this.text({
+        x: this.canvas.width / 2,
+        y: this.canvas.height / 2,
+        fontSize: 68,
+        text: 'Game Over',
+      })
 
       this.stopAnimation()
     }
