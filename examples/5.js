@@ -19,7 +19,7 @@ class Bob {
 
 class Pendulum extends Canvas {
   constructor() {
-    super({ fps: 60, bgColor: 'rgb(50, 50, 50)', width: 800, height: 600 })
+    super({ fps: 60, bgColor: 'rgb(50, 50, 50)', width: 800, height: 600, hook: '.main' })
 
     this.angle = Math.PI / 4
     this.radius = 150

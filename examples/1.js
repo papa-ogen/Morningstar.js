@@ -42,7 +42,7 @@ class Cell {
 
 class AStar extends Canvas {
   constructor() {
-    super({ width: 600, height: 600, bgColor: '#BADA55', fps: 16 })
+    super({ width: 600, height: 600, bgColor: '#BADA55', fps: 16, hook: '.main' })
 
     this.cols = 50;
     this.rows = 50;

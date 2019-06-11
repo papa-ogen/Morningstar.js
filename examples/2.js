@@ -58,7 +58,7 @@ class Cell {
 
 class Maze extends Canvas {
   constructor() {
-    super({ bgColor: '#666', fps: 60 })
+    super({ bgColor: '#666', fps: 60, hook: '.main' })
 
     this.cols = 25;
     this.rows = 25;

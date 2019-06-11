@@ -4,6 +4,7 @@ export default class Canvas {
     this.height = config.height || 600
     this.bgColor = config.bgColor || '#000'
     this.fps = config.fps || 60
+    this.hook = config.hook
 
     this.appendToBody()
 
@@ -15,11 +16,16 @@ export default class Canvas {
 
   appendToBody() {
     const c = document.createElement('canvas')
+    let appendElement = document.body
     c.width = this.width
     c.height = this.height
     c.style.background = this.bgColor
 
-    document.body.append(c)
+    if(this.hook) {
+      appendElement = document.querySelector(this.hook)
+    }
+
+    appendElement.append(c)
   }
 
   startAnimation(stop = false) {
