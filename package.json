@@ -1,0 +1,17 @@
+{
+  "name": "morningstar",
+  "version": "0.0.1",
+  "description": "A simple Vector library in JavaScript",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel examples/index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Jörgen Thelin <thelin.jorgen@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^1.12.3",
+    "tape": "^4.10.2"
+  }
+}
