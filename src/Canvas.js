@@ -97,8 +97,9 @@ export default class Canvas {
     this.ctx.shadowColor = color;
   }
 
-  text({ x, y, fontSize = 12, font = 'serif', color = '#fff', text, center = true }) {
-    const textLength = center ? this.ctx.measureText(text).width / 2 : 0;
+  text({ x, y, fontSize = 12, font = 'serif', color = '#fff', text, center }) {
+    const sizeFactor = fontSize >= 50 ? 1.2 : 0.8 // Todo: refine
+    const textLength = center ? (this.ctx.measureText(text).width / 2) * sizeFactor : 0;
     this.ctx.font = `${fontSize}px ${font}`;
     this.ctx.fillStyle = color;
     this.ctx.fillText(text, x - textLength, y);

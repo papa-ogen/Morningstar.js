@@ -1,3 +1,6 @@
+import { Canvas, Calc } from '../src'
+import { CircleParticle, SquareParticle } from './classes/Particle'
+
 //  https://cal.cs.umbc.edu/Courses/CS6967-F08/Papers/Reeves-1983-PSA.pdf
 /*
 -The Fireball
@@ -6,9 +9,9 @@
 -The Shattering of the Object
 */
 
-class Particles extends Morningstar {
+class Particles extends Canvas {
   constructor() {
-    super({ bgColor: '#BADA55', fps: 60 })
+    super({ bgColor: '#BADA55', fps: 60, hook: '.main' })
     this.particles = []
 
     this.mouseClick()
@@ -23,12 +26,12 @@ class Particles extends Morningstar {
       const acceleration = -0.05
       const vx = x + Math.cos(angle) * velocity
       const vy = y + Math.sin(angle) * velocity
-      const r = Morningstar.random(1, 5)
+      const r = Calc.random(1, 5)
 
       if (Math.random() > 0.5) {
-        this.particles.push(new CircleParticle(this, Morningstar.create3DVector(vx, vy), r, velocity, acceleration, angle))
+        this.particles.push(new CircleParticle(this, Calc.create3DVector(vx, vy), r, velocity, acceleration, angle))
       } else {
-        this.particles.push(new SquareParticle(this, Morningstar.create3DVector(vx, vy), r, r, 'red', velocity, acceleration, angle))
+        this.particles.push(new SquareParticle(this, Calc.create3DVector(vx, vy), r, r, 'red', velocity, acceleration, angle))
       }
     }
   }

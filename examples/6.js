@@ -141,12 +141,13 @@ class BallsAndTanks extends Canvas {
       center: false
     })
 
-    if (this.health> 0) {
+    if (this.health <= 0) {
       this.text({
         x: this.canvas.width / 2,
         y: this.canvas.height / 2,
         fontSize: 68,
         text: 'Game Over',
+        center: true
       })
 
       this.stopAnimation()
