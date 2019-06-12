@@ -23,6 +23,6 @@ class Example extends Canvas {
   }
 }
 
-new Pendulum
+new Example
 ```
  
