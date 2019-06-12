@@ -2,7 +2,7 @@ export default class Canvas {
   constructor(config = {}) {
     this.width = config.width || 600
     this.height = config.height || 600
-    this.bgColor = config.bgColor || '#000'
+    this.bgColor = config.bgColor || 'none'
     this.fps = config.fps || 60
     this.hook = config.hook
 
@@ -36,7 +36,7 @@ export default class Canvas {
     this.stop = stop
   }
 
-  rect({ x, y, width, height, color, strokeWidth, strokeColor, shadow, rotate }) {
+  rect({ x, y, width, height, color='#000', strokeWidth, strokeColor, shadow, rotate }) {
     this.ctx.fillStyle = color;
 
     if (strokeWidth) {
