@@ -21,7 +21,7 @@ export default class Canvas {
     c.height = this.height
     c.style.background = this.bgColor
 
-    if(this.hook) {
+    if (this.hook) {
       appendElement = document.querySelector(this.hook)
     }
 
@@ -36,7 +36,7 @@ export default class Canvas {
     this.stop = stop
   }
 
-  rect({ x, y, width, height, color='#000', strokeWidth, strokeColor, shadow, rotate }) {
+  rect({ x, y, width, height, color = '#000', strokeWidth, strokeColor, shadow, rotate }) {
     this.ctx.fillStyle = color;
 
     if (strokeWidth) {
@@ -88,6 +88,20 @@ export default class Canvas {
       this.ctx.fillStyle = color;
       this.ctx.fill();
     }
+  }
+
+  createImage({ src, sx, sy, sWidth, sHeight, x, y, width, height }) {
+    if (!width && !height) {
+      this.ctx.drawImage(src, x, y);
+
+      return;
+    } else if (width && height && !sx && !sy && !sWidth && !sHeight) {
+      this.ctx.drawImage(src, x, y, width, height);
+
+      return;
+    }
+
+    this.ctx.drawImage(src, sx, sy, sWidth, sHeight, x, y, width, height);
   }
 
   addShadow({ offsetX = 2, offsetY = 2, blur = 2, color = 'rgba(0, 0, 0, 0.5)' }) {

@@ -42,8 +42,30 @@ export default class Calc {
     return (angle + Math.PI) % (2 * Math.PI);
   }
 
-  circlesCollide(x1, y1, r1, x2, y2, r2) {
+  static circlesCollide(x1, y1, r1, x2, y2, r2) {
     return Math.abs((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)) < (r1 + r2) * (r1 + r2);
+  }
+
+  static rectangleCollide(rect1, rect2) {
+    return (rect1.x < rect2.x + rect2.width &&
+      rect1.x + rect1.width > rect2.x &&
+      rect1.y < rect2.y + rect2.height &&
+      rect1.y + rect1.height > rect2.y)
+  }
+
+  static circleRectangleCollide(cX, cY, cR, rX, rY, rW, rH) {
+    const distX = Math.abs(cX - rX - rW / 2);
+    const distY = Math.abs(cY - rY - rH / 2);
+
+    if (distX > (rW / 2 + cR)) { return false; }
+    if (distY > (rH / 2 + cR)) { return false; }
+
+    if (distX <= (rW / 2)) { return true; }
+    if (distY <= (rH / 2)) { return true; }
+
+    const dx = distX - rW / 2;
+    const dy = distY - rH / 2;
+    return (dx * dx + dy * dy <= (cR * cR));
   }
 
   static random(min = 0, max = 255) {
