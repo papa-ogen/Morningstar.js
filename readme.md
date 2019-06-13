@@ -1,7 +1,7 @@
 # Morningstar.js
 
 ## Examples
-https://papa-ogen.github.io/Morningstar.js/index.html
+https://papa-ogen.github.io/morningstar.js/index.html
 
 Simple code example of creating a canvas with a square
 ```javascript
