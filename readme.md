@@ -1,6 +1,9 @@
 # Morningstar.js
 
-Simple example of creating a canvas with a square
+## Examples
+https://papa-ogen.github.io/Morningstar.js/index.html
+
+Simple code example of creating a canvas with a square
 ```javascript
 import { Canvas } from 'Morningstar.js';
 
@@ -23,6 +26,6 @@ class Example extends Canvas {
   }
 }
 
-new Pendulum
+new Example
 ```
  
