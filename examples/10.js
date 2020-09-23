@@ -1,8 +1,8 @@
 import { Canvas, Calc } from '../src'
 
 class Sprite {
-  constructor(ms, image, pos, width, height) {
-    this.image = image
+  constructor(ms, src, pos, width, height, loop = true) {
+    this.src = src
     this.ms = ms
     this.pos = pos
     this.width = width
@@ -12,38 +12,40 @@ class Sprite {
     this.tickCount = 0;
     this.ticksPerFrame = 0;
     this.numberOfFrames = 12;
-    this.loop = true
+    this.loop = loop
   }
 
   render() {
-    const { ms, pos, width, height, frameIndex } = this
+    const { ms, pos: { x, y }, width, height, frameIndex, numberOfFrames, ticksPerFrame, src, loop } = this
     ms.createImage({
-      src: this.image,
-      sx: this.frameIndex * this.width / this.numberOfFrames,
+      src,
+      sx: frameIndex * width / numberOfFrames,
       sy: 0,
-      width: this.width / this.numberOfFrames,
-      height: this.height,
-      x: pos.x,
-      y: pos.y,
-      sWidth: this.width / this.numberOfFrames,
-      sHeight: this.height});
+      width: width / numberOfFrames,
+      height,
+      x,
+      y,
+      sWidth: width / numberOfFrames,
+      sHeight: height
+    });
 
     this.tickCount += 1;
 
-    if (this.tickCount > this.ticksPerFrame) {
+    if (this.tickCount > ticksPerFrame) {
       this.tickCount = 0;
 
       if (this.frameIndex < 2) {
         // Go to the next frame
         this.frameIndex += 1;
-      } else if (this.loop) {
+      } else if (loop) {
         this.frameIndex = 0;
       }
     }
   }
 }
 
-// http://www.williammalone.com/articles/create-html5-canvas-javascript-sprite-animation/soldier-sprite.png
+// http://www.williammalone.com/articles/create-html5-canvas-javascript-sprite-animation
+// http://www.williammalone.com/articles/create-html5-canvas-javascript-game-character/1/
 
 class Sprites extends Canvas {
   constructor() {

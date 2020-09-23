@@ -1,7 +1,10 @@
 import Vector from './Vector'
 
 export default class Calc {
-  constructor() { }
+  constructor() {
+    this.HALF_PI = Math.PI / 2
+    this.DOUBLE_PI = Math.PI * 2
+  }
 
   static constrain(n, min, max) {
     return n < min ? min : n && n > max ? max : n;
@@ -70,6 +73,11 @@ export default class Calc {
 
   static random(min = 0, max = 255) {
     return Math.floor(Math.random() * (max - min)) + min;
+  }
+
+  static randomOffset(offset) {
+    const rand = Math.random()
+    return rand > 0.5 ? rand * offset : -rand * offset
   }
 
   static easingFunctions() {
